@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+	<device>
+		<deviceType>urn:akbooer-com:device:MetOffice_DataPoint:1</deviceType>
+		<staticJson></staticJson>
+		<friendlyName>MetOffice_DataPoints</friendlyName>
+		<manufacturer>akbooer</manufacturer>
+    <implementationList>
+      <implementationFile>I_MetOffice_DataPoint.xml</implementationFile>
+    </implementationList>
+	</device>
+</root>
