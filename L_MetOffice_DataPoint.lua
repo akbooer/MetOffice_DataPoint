@@ -44,10 +44,7 @@ local API     = require "openLuup.api"              -- new openLuup API
 
 local DEV = tables.DEV
 
-
-local function _log (msg)
-  luup.log (msg, "MetOffice")
-end
+local _log = luup.log
 
 -----
 
@@ -93,8 +90,8 @@ local function update_readings (p)
   end
   
   S = D["SiteRep.DV.Location.Period.Rep"]
-  for name, value in pairs (latest) do
-    S[name] = value
+  for var, value in pairs (latest) do
+    S[var] = value
   end
   S.dataDate = x.SiteRep.DV.dataDate
   
@@ -112,12 +109,11 @@ local function update_readings (p)
     end
   end
   
-  _log "...polling completed"
+  _log ("MetOffice DataPoint: dataDate " .. x.SiteRep.DV.dataDate)
   
 end
 
 local function poll (p)
-  _log "DataPoint polling... "
   update_readings (p)
 
   -- rechedule 
