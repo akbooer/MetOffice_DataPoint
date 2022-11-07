@@ -2,7 +2,7 @@
 <root xmlns="urn:schemas-upnp-org:device-1-0">
 	<device>
 		<deviceType>urn:akbooer-com:device:MetOffice_DataPoint:1</deviceType>
-		<staticJson></staticJson>
+		<staticJson>D_MetOffice_DataPoint.json</staticJson>
 		<friendlyName>MetOffice_DataPoints</friendlyName>
 		<manufacturer>akbooer</manufacturer>
     <implementationList>
