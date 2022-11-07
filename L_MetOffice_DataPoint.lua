@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.06",
+  VERSION       = "2022.11.07",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
@@ -83,13 +83,13 @@ local function update_readings (p)
   
   local P = x.SiteRep.DV.Location.Period
   local data = P[#P].Rep
-  local latest = data[#data]
-  if not latest then
+  if not data then
     _log "no data for current time interval"
     return
   end
   
   S = D["SiteRep.DV.Location.Period.Rep"]
+  local latest = data[#data]
   for var, value in pairs (latest) do
     S[var] = value
   end
