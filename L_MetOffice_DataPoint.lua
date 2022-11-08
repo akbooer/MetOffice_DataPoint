@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.08",
+  VERSION       = "2022.11.08b",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
@@ -46,6 +46,18 @@ local DEV = tables.DEV
 
 local _log = luup.log
 
+-----
+
+local Weather_types = {
+  "NA", "Not available",
+  [0] = "Clear night",
+  "Sunny day", "Partly cloudy (night)", "Partly cloudy (day)", "Not used", "Mist",                            -- 1–5
+  "Fog", "Cloudy", "Overcast", "Light rain shower (night)", "Light rain shower (day)",                        -- 6–10
+  "Drizzle", "Light rain", "Heavy rain shower (night)", "Heavy rain shower (day)", "Heavy rain",              -- 11–15
+  "Sleet shower (night)", "Sleet shower (day)", "Sleet", "Hail shower (night)", "Hail shower (day)",          -- 16-20
+  "Hail", "Light snow shower (night)", "Light snow shower (day)", "Light snow", "Heavy snow shower (night)",  -- 21–25
+  "Heavy snow shower (day)", "Heavy snow", "Thunder shower (night)", "Thunder shower (day)", "Thunder",       -- 26–30 
+}
 -----
 
 local function update_readings (p)
@@ -93,6 +105,12 @@ local function update_readings (p)
   for var, value in pairs (latest) do
     S[var] = value
   end
+  
+  local W = S.W   -- change weather type number to name
+  if W then 
+    S.W = table.concat {W, " – ", Weather_types[tonumber(W) or W] or '?'}
+  end
+  
   S.dataDate = x.SiteRep.DV.dataDate
   
   do -- update parent and child standard device variables
