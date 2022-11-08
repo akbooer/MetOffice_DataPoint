@@ -4,8 +4,6 @@
 local xml = require "openLuup.xml"
 local api = require "openLuup.api"
 
-local json = require "openLuup.json"
-
 local h = xml.createHTMLDocument ()    -- for factory methods
 local span = h.span
 local div = h.div
@@ -25,12 +23,17 @@ return {
         div {class = "w3-tiny w3-display-bottomright", dataDate}
       }
   end,
- 
+
   control = function() 
-    return [[
-      <div>
-        <a  href="https://www.metoffice.gov.uk/services/data/datapoint/about" target="_blank">About Met Office DataPoint</a>
-      </div>]]
+    return 
+      div {
+        div {class="w3-gray w3-round-large",
+          h.img {alt="Met Office logo", width=400, src="https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/images/about-us/website/mo_master_for_dark_backg_rbg.png", }
+        },
+        div {class = "w3-panel w3-margin-left",
+          p {h.a {href="https://www.metoffice.gov.uk/services/data/datapoint/about", target="_blank", "About Met Office DataPoint"}},
+          p {h.a {href="https://www.metoffice.gov.uk/services/data/datapoint/datapoint-documentation", target="_blank", "DataPoint Documentation"}}},    
+      }
     end,
  
 }
