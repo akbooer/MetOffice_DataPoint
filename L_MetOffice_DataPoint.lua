@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.07",
+  VERSION       = "2022.11.08",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
@@ -24,9 +24,9 @@ ABOUT = {
 ]]
 }
 
--- 2022.11.04   original version
--- 2022.11.06   make child devices optional, using 'children' device attribute containing T and/or H
-
+-- 2022.11.04  original version
+-- 2022.11.06  make child devices optional, using 'children' device attribute containing T and/or H
+-- 2022.11.08  fix for data split across two day intervals 
 
 --[[
 see:
@@ -82,7 +82,7 @@ local function update_readings (p)
   end
   
   local P = x.SiteRep.DV.Location.Period
-  local data = P[#P].Rep
+  local data = (P[2] or P[1] or {}).Rep   -- period split between two days
   if not data then
     _log "no data for current time interval"
     return
@@ -109,7 +109,8 @@ local function update_readings (p)
     end
   end
   
-  _log ("MetOffice DataPoint: dataDate " .. x.SiteRep.DV.dataDate)
+  D.hadevice.LastUpdate = os.time()
+  _log ("MetOffice DataPoint: " .. x.SiteRep.DV.dataDate)
   
 end
 
