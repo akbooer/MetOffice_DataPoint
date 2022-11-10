@@ -2,11 +2,12 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.09",
+  VERSION       = "2022.11.10",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
   DOCUMENTATION = "",
+  DEBUG         = false,
   LICENSE       = [[
   Copyright 2022 AK Booer
 
@@ -48,18 +49,6 @@ local _log = luup.log
 
 -----
 
-local Weather_types = {
-  "NA", "Not available",
-  [0] = "Clear night",
-  "Sunny day", "Partly cloudy (night)", "Partly cloudy (day)", "Not used", "Mist",                            -- 1–5
-  "Fog", "Cloudy", "Overcast", "Light rain shower (night)", "Light rain shower (day)",                        -- 6–10
-  "Drizzle", "Light rain", "Heavy rain shower (night)", "Heavy rain shower (day)", "Heavy rain",              -- 11–15
-  "Sleet shower (night)", "Sleet shower (day)", "Sleet", "Hail shower (night)", "Hail shower (day)",          -- 16-20
-  "Hail", "Light snow shower (night)", "Light snow shower (day)", "Light snow", "Heavy snow shower (night)",  -- 21–25
-  "Heavy snow shower (day)", "Heavy snow", "Thunder shower (night)", "Thunder shower (day)", "Thunder",       -- 26–30 
-}
------
-
 local function update_readings (p)
 
   local D = API[p.D]      -- this device
@@ -97,6 +86,7 @@ local function update_readings (p)
   local data = (P[2] or P[1] or {}).Rep   -- period split between two days
   if not data or #data == 0 then
     _log "no data for current time interval"
+    if ABOUT.DEBUG then _log (json.encode {Period = P}) end   -- diagnostic data dump
     return
   end
   
@@ -104,11 +94,6 @@ local function update_readings (p)
   local latest = data[#data]
   for var, value in pairs (latest) do
     S[var] = value
-  end
-  
-  local W = S.W   -- change weather type number to name
-  if W then 
-    S.W = table.concat {W, " – ", Weather_types[tonumber(W) or W] or '?'}
   end
   
   S.dataDate = x.SiteRep.DV.dataDate
