@@ -60,6 +60,7 @@ return {
     local V = S.V
     local Dp = S.Dp
     
+    local line0 = D["SiteRep.DV.Location"].name
     local line1 = conditions[1]: format (W, P, Pt)
     local line2 = conditions[2]: format(B, X, G)
     local line3 = conditions[3]: format(V, Dp)
@@ -73,10 +74,9 @@ return {
             div {class="w3-medium",
               a {class = "w3-round w3-lime w3-button w3-margin-left w3-margin-top", href=DPabout, target="_blank", "About"},
               a {class = "w3-round w3-lime w3-button w3-margin-left w3-margin-top", href=DPdocs, target="_blank", "Documentation"},
-          div {class="w3-light-blue w3-round-large w3-padding w3-cell-middle w3-margin", line1, br, line2, br, line3},    
+              div {class="w3-light-blue w3-round-large w3-padding w3-cell-middle w3-margin", line0, br, line1, br, line2, br, line3},    
               },
             },
---          div {class="w3-cell w3-light-blue w3-round-large w3-padding w3-cell-middle", line1, br, line2, br, line3},    
           },
       }
     end,
