@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.10",
+  VERSION       = "2022.11.12",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
@@ -83,7 +83,7 @@ local function update_readings (p)
   end
   
   local P = x.SiteRep.DV.Location.Period
-  local data = (P[2] or P[1] or {}).Rep   -- period split between two days
+  local data = (P[#] or P).Rep   -- period may contain multiple day intervals, use latest
   if not data or #data == 0 then
     _log "no data for current time interval"
     if ABOUT.DEBUG then _log (json.encode {Period = P}) end   -- diagnostic data dump
