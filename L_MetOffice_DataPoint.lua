@@ -83,7 +83,7 @@ local function update_readings (p)
   end
   
   local P = x.SiteRep.DV.Location.Period
-  local data = (P[#] or P).Rep   -- period may contain multiple day intervals, use latest
+  local data = (P[#P] or P).Rep   -- period may contain multiple day intervals, use latest
   if not data or #data == 0 then
     _log "no data for current time interval"
     if ABOUT.DEBUG then _log (json.encode {Period = P}) end   -- diagnostic data dump
