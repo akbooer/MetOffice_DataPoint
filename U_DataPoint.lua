@@ -60,7 +60,7 @@ return {
     local V = S.V
     local Dp = S.Dp
     
-    local line0 = D["SiteRep.DV.Location"].name
+    local line0 = D["SiteRep:DV:Location"].name
     local line1 = conditions[1]: format (W, P, Pt)
     local line2 = conditions[2]: format(B, X, G)
     local line3 = conditions[3]: format(V, Dp)

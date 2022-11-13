@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.12",
+  VERSION       = "2022.11.14",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2022 AKBooer",
@@ -28,6 +28,7 @@ ABOUT = {
 -- 2022.11.04  original version
 -- 2022.11.06  make child devices optional, using 'children' device attribute containing T and/or H
 -- 2022.11.08  fix for data split across two day intervals 
+-- 2022.11.14  change ServiceId separator to ':' from '.' (less confusing)
 
 --[[
 see:
@@ -68,14 +69,14 @@ local function update_readings (p)
     return
   end
   
-  local S = D["SiteRep.DV.Location"]              -- serviceId  
+  local S = D["SiteRep:DV:Location"]              -- serviceId  
   for a,b in pairs (x.SiteRep.DV.Location) do
     if a ~= "Period" then
       S[a] = b                    -- assign location variables
     end
   end
 
-  S = D["SiteRep.Wx.Param"]              -- serviceId
+  S = D["SiteRep:Wx:Param"]              -- serviceId
   local  name = "%s (%s)"
   for _, a in pairs(x.SiteRep.Wx.Param) do
     local var = name: format (a["$"], a.units)
@@ -90,7 +91,7 @@ local function update_readings (p)
     return
   end
   
-  S = D["SiteRep.DV.Location.Period.Rep"]
+  S = D["SiteRep:DV:Location:Period:Rep"]
   local latest = data[#data]
   for var, value in pairs (latest) do
     S[var] = value
