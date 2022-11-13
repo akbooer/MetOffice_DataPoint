@@ -7,10 +7,11 @@ local api = require "openLuup.api"
 local h = xml.createHTMLDocument ()    -- for factory methods
 local span, div = h.span, h.div
 local img = h.img
-local p, a = h.p, h.a
+local a = h.a
 local br = h.br()
 
-local SID = "SiteRep.DV.Location.Period.Rep"
+local SID  = "SiteRep:DV:Location:Period:Rep"
+local LSID = "SiteRep:DV:Location"
 
 local Weather_types = {
   ["NA"] = "Not available",
@@ -60,7 +61,7 @@ return {
     local V = S.V
     local Dp = S.Dp
     
-    local line0 = D["SiteRep:DV:Location"].name
+    local line0 = D[LSID].name
     local line1 = conditions[1]: format (W, P, Pt)
     local line2 = conditions[2]: format(B, X, G)
     local line3 = conditions[3]: format(V, Dp)
