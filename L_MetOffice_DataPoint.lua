@@ -1,15 +1,15 @@
 module(..., package.seeall)
 
-ABOUT = {
+_G.ABOUT = {
   NAME          = "L_MetOffice_DataPoint",
-  VERSION       = "2022.11.14",
+  VERSION       = "2024.07.29",
   DESCRIPTION   = "WeatherApp using MetOffice data",
   AUTHOR        = "@akbooer",
-  COPYRIGHT     = "(c) 2022 AKBooer",
+  COPYRIGHT     = "(c) 2022-present AKBooer",
   DOCUMENTATION = "",
   DEBUG         = false,
   LICENSE       = [[
-  Copyright 2022 AK Booer
+  Copyright 2022-present AK Booer
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ ABOUT = {
 -- 2022.11.08  fix for data split across two day intervals 
 -- 2022.11.14  change ServiceId separator to ':' from '.' (less confusing)
 
+-- 2024.07.22  add MaxTemp and MinTemp (handled by Data Historian rules)
+-- 2024.07.28  add more checks for returned data structure (including JSON global)
+
+
 --[[
 see:
   https://www.metoffice.gov.uk/services/data/datapoint/
@@ -43,6 +47,9 @@ also:
 local json    = require "openLuup.json"
 local tables  = require "openLuup.servertables"     -- for standard DEV and SID definitions
 local API     = require "openLuup.api"              -- new openLuup API
+
+local luup = _G.luup
+local ABOUT = _G.ABOUT
 
 local DEV = tables.DEV
 
@@ -69,8 +76,16 @@ local function update_readings (p)
     return
   end
   
+  _G.JSON = j       -- 2024.07.28  save in global for debug purposes
+  
+  local location = x.SiteRep and x.SiteRep.DV and x.SiteRep.DV.Location
+  if not location then
+    _log ("error SiteRep components missing: " .. j)
+    return
+  end
+  
   local S = D["SiteRep:DV:Location"]              -- serviceId  
-  for a,b in pairs (x.SiteRep.DV.Location) do
+  for a,b in pairs (location) do
     if a ~= "Period" then
       S[a] = b                    -- assign location variables
     end
@@ -83,7 +98,7 @@ local function update_readings (p)
     S[var] = a.name
   end
   
-  local P = x.SiteRep.DV.Location.Period
+  local P = location.Period
   local data = (P[#P] or P).Rep   -- period may contain multiple day intervals, use latest
   if not data or #data == 0 then
     _log "no data for current time interval"
@@ -101,6 +116,9 @@ local function update_readings (p)
   
   do -- update parent and child standard device variables
     D.temp.CurrentTemperature = latest.T
+    D.temp.MaxTemp = latest.T               -- 2024.07.22
+    D.temp.MinTemp = latest.T               -- Max/Min handled by Historian rules
+    
     D.humid.CurrentLevel = latest.H
     D.generic.Pressure = latest.P
     
