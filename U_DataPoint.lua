@@ -35,7 +35,7 @@ local MetLogo =
   "https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/images/about-us/website/mo_master_for_dark_backg_rbg.png"
 local DPabout = "https://www.metoffice.gov.uk/services/data/datapoint/about"
 local DPdocs  = "https://www.metoffice.gov.uk/services/data/datapoint/datapoint-documentation"
-
+local DPstations = "https://www.metoffice.gov.uk/research/climate/maps-and-data/uk-synoptic-and-climate-stations"
 
 return {
   panel = function(devNo)
@@ -75,6 +75,7 @@ return {
             div {class="w3-medium",
               a {class = "w3-round w3-lime w3-button w3-margin-left w3-margin-top", href=DPabout, target="_blank", "About"},
               a {class = "w3-round w3-lime w3-button w3-margin-left w3-margin-top", href=DPdocs, target="_blank", "Documentation"},
+              a {class = "w3-round w3-lime w3-button w3-margin-left w3-margin-right w3-margin-top", href=DPstations, target="_blank", "Stations"},
               div {class="w3-light-blue w3-round-large w3-padding w3-cell-middle w3-margin", line0, br, line1, br, line2, br, line3},    
               },
             },
